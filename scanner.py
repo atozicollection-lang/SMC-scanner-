@@ -185,11 +185,13 @@ def calc_confidence(s):
     else:
         reasons.append(f"⚠️ Leg 2 closed bearish (weaker rejection)")
 
-    # RSI gap must be >= 5 already enforced, but bonus for large gap
-
-        score += 10; reasons.append(f"✅ RSI just crossed 30: {s['leg2_rsi']} (early entry)")
-    elif 35 < s["leg2_rsi"] <= 42:
-        score += 5;  reasons.append(f"⚠️ Leg2 RSI: {s['leg2_rsi']}")
+    # Leg2 RSI just crossed 30 bonus (max 10 pts)
+    if s["leg2_rsi"] > 30 and s["leg2_rsi"] <= 35:
+        score += 10
+        reasons.append("RSI just crossed 30: " + str(s["leg2_rsi"]) + " (early entry)")
+    elif s["leg2_rsi"] > 35 and s["leg2_rsi"] <= 42:
+        score += 5
+        reasons.append("Leg2 RSI: " + str(s["leg2_rsi"]))
 
     score = min(score, 100)
     if score >= 80:   label, emoji = "🔥 VERY HIGH", "🔥"
